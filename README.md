@@ -1,2 +1,3 @@
-# adventofcode
-My adventofcode.com experiments
+# aoc
+
+My [adventofcode.com](https://adventofcode.com/) experiments 🎄
