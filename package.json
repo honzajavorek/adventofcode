@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "test": "bats --recursive --pretty ."
+  },
+  "devDependencies": {
+    "bats": "1.1.0"
+  }
+}
