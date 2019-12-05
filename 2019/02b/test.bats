@@ -1,14 +1,17 @@
 #!/usr/bin/env bats
 
-@test "computing 1 + 1 = 2" {
-    run runhaskell "$BATS_TEST_DIRNAME/code.hs" "1,0,0,0,99"
-    [ "$output" = "2,0,0,0,99" ]
+@test "reverse-computing 02a" {
+    code=$(cat "$BATS_TEST_DIRNAME/puzzle.txt")
+    run runhaskell "$BATS_TEST_DIRNAME/code.hs" "$code" "3790689"
+
+    [ $(echo $output | cut -d, -f2) = "12" ]
+    [ $(echo $output | cut -d, -f3) = "2" ]
 }
 
-@test "computing 02a" {
+@test "reverse-computing 02b" {
     code=$(cat "$BATS_TEST_DIRNAME/puzzle.txt")
-    run runhaskell "$BATS_TEST_DIRNAME/code.hs" "$code" "12" "2"
-    result=$(echo $output | cut -d, -f1)
+    run runhaskell "$BATS_TEST_DIRNAME/code.hs" "$code" "19690720"
 
-    [ "$result" = "3790689" ]
+    [ $(echo $output | cut -d, -f2) = "65" ]
+    [ $(echo $output | cut -d, -f3) = "33" ]
 }
