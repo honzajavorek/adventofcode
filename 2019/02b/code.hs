@@ -6,8 +6,14 @@ type Value = Int
 type Memory = [Value]
 
 main = do
-    code:_ <- getArgs
-    putStrLn . unparse . interpret 0 $ parse code
+    args <- getArgs
+    case args of
+        code:[] -> putStrLn . unparse . interpret 0 $ parse code
+        code:nounArg:verbArg:[] ->
+            let noun = readValue nounArg
+                verb = readValue verbArg
+            in putStrLn . unparse . interpret 0 . (sub noun verb) $ parse code
+        _ -> error "ERROR! bad arguments"
 
 parse :: String -> Memory
 parse code = map readValue $ words [if c == ',' then ' ' else c | c <- code]
@@ -17,6 +23,9 @@ unparse memory = reverse . (drop 1) . reverse . (drop 1) $ show memory
 
 readValue :: String -> Value
 readValue = read
+
+sub :: Value -> Value -> Memory -> Memory
+sub noun verb = (apply 2 verb) . (apply 1 noun)
 
 interpret :: Address -> Memory -> Memory
 interpret ptr memory
