@@ -26,8 +26,20 @@ toCoords :: [Segment] -> [Coord]
 toCoords = foldl foldSegment [Coord {x = 0, y = 0}]
 
 foldSegment :: [Coord] -> Segment -> [Coord]
-foldSegment (lastCoord@(Coord { x = x, y = y }):coords) (Segment { dir = dir, steps = steps })
-    | otherwise = lastCoord:coords
+foldSegment (prevCoord:coords) (Segment { dir = dir, steps = steps })
+    | dir == U = (generateCoords (+) keep steps prevCoord) ++ coords
+    | dir == R = (generateCoords keep (+) steps prevCoord) ++ coords
+    | dir == D = (generateCoords (-) keep steps prevCoord) ++ coords
+    | dir == L = (generateCoords keep (-) steps prevCoord) ++ coords
+
+generateCoords :: (Int -> Int -> Int) -> (Int -> Int -> Int) -> Int -> Coord -> [Coord]
+generateCoords opX opY steps (Coord { x = prevX, y = prevY }) =
+    map (\step -> (Coord { x = (prevX `opX` step)
+                         , y = (prevY `opY` step)
+                         })) [steps,(steps - 1)..0]
+
+keep :: Int -> Int -> Int
+keep coord step = coord
 
 crossings :: [[Coord]] -> [Coord]
 crossings coords = [(Coord {x = 0, y = 2})]
