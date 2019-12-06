@@ -7,8 +7,7 @@ data Coord = Coord { x :: Int
                    } deriving (Eq, Show)
 
 
-main' = interact $ show . minimum . distances . crossings . (map toCoords) . (map parse) . lines
-main = interact $ show . crossings . (map toCoords) . (map parse) . lines
+main = interact $ show . minDistance . distances . crossings . (map toCoords) . (map parse) . lines
 
 
 parse :: String -> [Segment]
@@ -45,4 +44,7 @@ crossings :: [[Coord]] -> [Coord]
 crossings [coords1,coords2] = [c1 | c1 <- coords1, c2 <- coords2, c1 == c2]
 
 distances :: [Coord] -> [Int]
-distances coords = [2]
+distances coords = [(abs x) + (abs y) | (Coord { x = x, y = y }) <- coords]
+
+minDistance :: [Int] -> Int
+minDistance distances = minimum [d | d <- distances, d > 0]
