@@ -1,5 +1,3 @@
-type Distance = Int
-
 data Direction = U | R | D | L deriving (Eq, Show)
 data Segment = Segment { dir :: Direction
                        , steps :: Int
@@ -34,5 +32,5 @@ foldSegment (lastCoord@(Coord { x = x, y = y }):coords) (Segment { dir = dir, st
 crossings :: [[Coord]] -> [Coord]
 crossings coords = [(Coord {x = 0, y = 2})]
 
-distances :: [Coord] -> [Distance]
+distances :: [Coord] -> [Int]
 distances coords = [2]
