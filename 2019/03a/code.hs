@@ -8,7 +8,7 @@ data Coord = Coord { x :: Int
 
 
 main' = interact $ show . minimum . distances . crossings . (map toCoords) . (map parse) . lines
-main = interact $ show . (map toCoords) . (map parse) . lines
+main = interact $ show . crossings . (map toCoords) . (map parse) . lines
 
 
 parse :: String -> [Segment]
@@ -27,10 +27,10 @@ toCoords = foldl foldSegment [Coord {x = 0, y = 0}]
 
 foldSegment :: [Coord] -> Segment -> [Coord]
 foldSegment (prevCoord:coords) (Segment { dir = dir, steps = steps })
-    | dir == U = (generateCoords (+) keep steps prevCoord) ++ coords
-    | dir == R = (generateCoords keep (+) steps prevCoord) ++ coords
-    | dir == D = (generateCoords (-) keep steps prevCoord) ++ coords
-    | dir == L = (generateCoords keep (-) steps prevCoord) ++ coords
+    | dir == U = (generateCoords keep (+) steps prevCoord) ++ coords
+    | dir == R = (generateCoords (+) keep steps prevCoord) ++ coords
+    | dir == D = (generateCoords keep (-) steps prevCoord) ++ coords
+    | dir == L = (generateCoords (-) keep steps prevCoord) ++ coords
 
 generateCoords :: (Int -> Int -> Int) -> (Int -> Int -> Int) -> Int -> Coord -> [Coord]
 generateCoords opX opY steps (Coord { x = prevX, y = prevY }) =
@@ -42,7 +42,7 @@ keep :: Int -> Int -> Int
 keep coord step = coord
 
 crossings :: [[Coord]] -> [Coord]
-crossings coords = [(Coord {x = 0, y = 2})]
+crossings [coords1,coords2] = [c1 | c1 <- coords1, c2 <- coords2, c1 == c2]
 
 distances :: [Coord] -> [Int]
 distances coords = [2]
